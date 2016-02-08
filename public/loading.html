@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+	<head>
+		<title>荟邮云邮轮航次查询系统</title>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="refresh" content="2;URL='search.html'" />
+		<meta http-equiv="Cache-Control" content="no-siteapp" />
+		<script src="js/jquery.min.js"></script>
+		<script src="js/amazeui.min.js"></script>
+		<script type="text/javascript" src="js/basic.js"></script>
+		<link rel="stylesheet" href="css/amazeui.min.css" />
+		<link rel="stylesheet" href="css/basic.css" />
+		<style>
+			.parent {
+				display: inline-block;
+				height: 100%;
+				width: 100%;
+				text-align: center;
+				vertical-align: middle;
+				font-size: 0;
+				margin-top: 50%;
+				/*需要将父容器的字号设置为0，不然当要垂直居中的区块中内容过段换行时就会影响居中的效果*/
+			}
+			
+			.parent:before {
+				content: '';
+				display: inline-block;
+				height: 100%;
+				vertical-align: middle;
+			}
+			
+			.child {
+				vertical-align: middle;
+				display: inline-block;
+				max-width: 100%;
+				font-size: 1.2rem;
+			}
+			.child img{ 
+				width:40%;
+			}
+			h1{
+				margin-top: 0 !important;
+				margin-bottom: 0 !important;
+			}
+			h2{
+				margin-top: 5px !important;
+				margin-bottom: 10px !important;
+				display: inline-block;
+				width:80%;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="parent">
+			<div class="child">
+				<h1>荟邮云邮轮航次查询系统</h1>
+				<h2>邮轮行业最牛的航次查询工具，云服务器查询，给你飞一般的感觉</h2>
+				<img src="/img/loading.gif" alt="加载中..." />
+			</div>
+		</div>
+	</body>
+
+</html>
