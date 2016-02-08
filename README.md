@@ -11,7 +11,7 @@
 
 3.执行npm install
 
-4.打开浏览器输入地址:http://127.0.0.1:8088/search.html运行
+4.打开浏览器输入地址:http://127.0.0.1:8088/search.html
 
 项目演示地址:http://www.4000191177.com:8088/loading.html
 
