@@ -92,6 +92,10 @@ exports.spider = function(req, res) {
 	});
 }
 
+exports.loading = function(req, res) {
+	res.redirect("/loading.html");
+}
+
 exports.servicedo = function(req, res) {
 	var _sql = req.params.sql;
 	if (_sql == "SearchByKey") {
@@ -108,7 +112,7 @@ exports.servicedo = function(req, res) {
 	} else if (_sql == "getDetail") {
 		/*根据url抓取产品详情*/
 		var purl = req.param("url");
-		debug(purl);
+		console.log(purl);
 		request(purl, function(err, data) {
 			if (err) return console.error(err);
 			var list = [];

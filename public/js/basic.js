@@ -95,6 +95,13 @@ function comboxSearch() {
 	var data_4_1 = $('#startdate1').val();
 	var data_4_2 = $('#startdate2').val();
 	var data_5 = $('#day').val();
+	/*set sessionStorage*/
+	window.sessionStorage.setItem("data_1",data_1);
+	window.sessionStorage.setItem("data_2",data_2);
+	window.sessionStorage.setItem("data_3",data_3);
+	window.sessionStorage.setItem("data_4_1",data_4_1);
+	window.sessionStorage.setItem("data_4_2",data_4_2);
+	window.sessionStorage.setItem("data_5",data_5);
 	if (data_1 == '*' && data_2 == '*' && data_3 == '*' && data_4_1 == '' && data_4_2 == '' && data_5 == '*') {
 		$('.errorinfo').html('<p>最少要选择一个查询条件</p>').removeClass("none");
 		setTimeout(function() {
@@ -212,6 +219,7 @@ function loadCompany() {
 				res += '<option value="' + data[i].txtCompanyNo + '|' + data[i].txtCompanyName + '">' + data[i].txtCompanyName + '</option>';
 			}
 			$("#txtCompanyName").html(res);
+			$('#txtCompanyName').val(window.sessionStorage.getItem("data_1"));
 		}
 	});
 }
@@ -238,6 +246,7 @@ function loadShip() {
 				res += '<option value="' + data[i].txtShipName + '">' + data[i].txtShipName + '</option>';
 			}
 			$("#txtCruise").html(res);
+			$('#txtCruise').val(window.sessionStorage.getItem("data_2"));
 		}
 	});
 }
@@ -255,6 +264,7 @@ function loadPort() {
 				res += '<option value="' + data[i].name + '">' + data[i].name + '</option>';
 			}
 			$("#port").html(res);
+			$('#port').val(window.sessionStorage.getItem("data_3"));
 		}
 	});
 }
@@ -267,6 +277,7 @@ function loadDay() {
 	}
 	res += '<option value="10">10天以上</option>';
 	$("#day").html(res);
+	$('#day').val(window.sessionStorage.getItem("data_5"));
 }
 
 /*加载产品详情*/
@@ -358,5 +369,12 @@ $(function() {
 		loadCompany();
 		loadPort();
 		loadDay();
+		if(window.sessionStorage.getItem("data_4_1")){
+			$('#startdate1').datepicker('setValue', window.sessionStorage.getItem("data_4_1"));
+		}
+		if(window.sessionStorage.getItem("data_4_2")){
+			$('#startdate2').datepicker('setValue', window.sessionStorage.getItem("data_4_2"));
+		}
+		
 	}
 });

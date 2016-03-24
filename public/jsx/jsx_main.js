@@ -136,10 +136,18 @@ var R_Result = React.createClass({
 			list = this.props.date;
 		}else{
 			list = this.props.date.map(function(c){
+			var p = c.numPrice;
+			if (p == 0) {
+				p = '售罄';
+			} else if (p == -1) {
+				p = '实时计价';
+			} else {
+				p = "¥" + p + "起";
+			}
 			return(
 					<li onClick={o.showDetail.bind(this,c.txtUrl)}>
 						<h1><span className="am-badge am-badge-success am-radius ">{c.txtSource}</span>{c.title}</h1>
-						<span className="price am-badge am-badge-warning am-radius ">{c.numPrice}</span>
+						<span className="price am-badge am-badge-warning am-radius ">{p}</span>
 					</li>
 				);
 			});	
