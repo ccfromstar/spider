@@ -3,6 +3,8 @@ var loadcompany = '<option value="*">邮轮公司</option><option value="*">数�
 var loadship = '<option value="*">船名</option><option value="*">数据加载中...</option>';
 var defaultship = '<option value="*">船名</option><option value="*">请先选择邮轮公司</option>';
 var loadport = '<option value="*">出发港</option><option value="*">数据加载中...</option>';
+var url = window.location.href;
+var loadinfo = "加载中...";
 
 /*模糊查询*/
 function searchKey() {
@@ -27,12 +29,34 @@ function searchKey() {
 				var res = '<ul class="am-list">';
 				for (var i in data) {
 					var p = data[i].numPrice;
-					p = p == 0 ? "售罄" : "¥" + p + "起";
-					res += '<li onclick="window.open(\'' + data[i].txtUrl + '\')">';
-					res += '<h1><span class="am-badge am-badge-success am-radius am-text-sm">' + data[i].txtSource + '</span> ' + data[i].txtCompany + '-' + data[i].txtCruise + '</h1>';
-					res += '<h2>邮轮线路：' + data[i].txtLine + '</h2>';
-					res += '<h2>出发日期：' + data[i].txtStartDate + ' ' + data[i].numNight + '晚' + data[i].numDay + '天</h2>';
-					res += '<span class="price am-badge am-badge-warning am-radius am-text-sm">' + p + '</span>';
+					if (p == 0) {
+						p = '售罄';
+					} else if (p == -1) {
+						p = '实时计价';
+					} else {
+						p = "¥" + p + "起";
+					}
+					if (data[i].txtSource == '踏破铁鞋') {
+						res += '<li onclick="showDetail(\'' + data[i].txtUrl + '\')">';
+					} else {
+						res += '<li onclick="window.open(\'' + data[i].txtUrl + '\')">';
+					}
+
+					if (data[i].txtSource == '驴妈妈' || data[i].txtSource == '途牛' || data[i].txtSource == '春秋') {
+						res += '<h1><span class="am-badge am-badge-success am-radius ">' + data[i].txtSource + '</span> ' + data[i].title + '</h1>';
+					} else if (data[i].txtSource == '同程' || data[i].txtSource == '众信') {
+						res += '<h1><span class="am-badge am-badge-success am-radius ">' + data[i].txtSource + '</span> ' + data[i].title + ' ' + data[i].txtStartDate + '</h1>';
+					} else {
+						res += '<h1><span class="am-badge am-badge-success am-radius ">' + data[i].txtSource + '</span> 【' + data[i].txtCompany + '-' + data[i].txtCruise + '】';
+						res += data[i].txtLine + ' ';
+						res += data[i].txtStartDate + ' ' + data[i].numNight + '晚' + data[i].numDay + '天</h1>';
+						/*
+						res += '<h1><span class="am-badge am-badge-success am-radius ">' + data[i].txtSource + '</span> ' + data[i].txtCompany + '-' + data[i].txtCruise + '</h1>';
+						res += '<h2>邮轮线路：' + data[i].txtLine + '</h2>';
+						res += '<h2>出发日期：' + data[i].txtStartDate + ' ' + data[i].numNight + '晚' + data[i].numDay + '天</h2>';
+						*/
+					}
+					res += '<span class="price am-badge am-badge-warning am-radius ">' + p + '</span>';
 					res += '</li>';
 				}
 				res += '</ul>';
@@ -41,9 +65,21 @@ function searchKey() {
 		});
 }
 
+/*显示产品详情*/
+function showDetail(url) {
+	window.location = 'detail.html?p=' + url;
+	/*
+	var $modal = $('#modal_detail');
+	$modal.css("height", $(window).height());
+	$modal.find("iframe").css("height", $(window).height() - 20).css("width", $(window).width()).attr("src", "load.html");
+	$modal.find("iframe").attr("src", url);
+	$modal.modal('open');*/
+}
+
 /*组合查询条件重置*/
-function resetFrom(){
-	$('#startdate').val('');
+function resetFrom() {
+	$('#startdate1').val('');
+	$('#startdate2').val('');
 	loadCompany();
 	loadPort();
 	loadShip();
@@ -56,25 +92,35 @@ function comboxSearch() {
 	var arr = data_1.split('|');
 	var data_2 = $('#txtCruise').val();
 	var data_3 = $('#port').val();
-	var data_4 = $('#startdate').val();
+	var data_4_1 = $('#startdate1').val();
+	var data_4_2 = $('#startdate2').val();
 	var data_5 = $('#day').val();
-	if (data_1 == '*' && data_2 == '*' && data_3 == '*' && data_4 == '' && data_5 == '*') {
-		$('.error1').removeClass("none");
+	if (data_1 == '*' && data_2 == '*' && data_3 == '*' && data_4_1 == '' && data_4_2 == '' && data_5 == '*') {
+		$('.errorinfo').html('<p>最少要选择一个查询条件</p>').removeClass("none");
 		setTimeout(function() {
-			$('.error1').addClass("none");
+			$('.errorinfo').addClass("none");
 		}, 2000);
 		return false;
 	}
+	if (data_4_1 != '' && data_4_2 != '' && data_4_1 > data_4_2) {
+		$('.errorinfo').html('<p>结束日期不能大于开始日期</p>').removeClass("none");
+		setTimeout(function() {
+			$('.errorinfo').addClass("none");
+		}, 2000);
+		return false;
+	}
+
 	//显示数据加载层
 	$("#result_combox").html(load);
 	$.ajax({
 		type: "POST",
 		url: "/service/SearchByComboxKey",
 		data: {
-			data_1: data_1 == '*'?"*":arr[1],
+			data_1: data_1 == '*' ? "*" : arr[1],
 			data_2: data_2,
 			data_3: data_3,
-			data_4: data_4,
+			data_4_1: data_4_1,
+			data_4_2: data_4_2,
 			data_5: data_5,
 			option_2: window.localStorage.getItem('option_2')
 		},
@@ -82,12 +128,33 @@ function comboxSearch() {
 			var res = '<ul class="am-list">';
 			for (var i in data) {
 				var p = data[i].numPrice;
-				p = p == 0 ? "售罄" : "¥" + p + "起";
-				res += '<li onclick="window.open(\'' + data[i].txtUrl + '\')">';
-				res += '<h1><span class="am-badge am-badge-success am-radius am-text-sm">' + data[i].txtSource + '</span> ' + data[i].txtCompany + '-' + data[i].txtCruise + '</h1>';
-				res += '<h2>邮轮线路：' + data[i].txtLine + '</h2>';
-				res += '<h2>出发日期：' + data[i].txtStartDate + ' ' + data[i].numNight + '晚' + data[i].numDay + '天</h2>';
-				res += '<span class="price am-badge am-badge-warning am-radius am-text-sm">' + p + '</span>';
+				if (p == 0) {
+					p = '售罄';
+				} else if (p == -1) {
+					p = '实时计价';
+				} else {
+					p = "¥" + p + "起";
+				}
+				if (data[i].txtSource == '踏破铁鞋') {
+					res += '<li onclick="showDetail(\'' + data[i].txtUrl + '\')">';
+				} else {
+					res += '<li onclick="window.open(\'' + data[i].txtUrl + '\')">';
+				}
+				if (data[i].txtSource == '驴妈妈' || data[i].txtSource == '途牛' || data[i].txtSource == '春秋') {
+					res += '<h1><span class="am-badge am-badge-success am-radius ">' + data[i].txtSource + '</span> ' + data[i].title + '</h1>';
+				} else if (data[i].txtSource == '同程' || data[i].txtSource == '众信') {
+					res += '<h1><span class="am-badge am-badge-success am-radius ">' + data[i].txtSource + '</span> ' + data[i].title + ' ' + data[i].txtStartDate + '</h1>';
+				} else {
+					res += '<h1><span class="am-badge am-badge-success am-radius ">' + data[i].txtSource + '</span> 【' + data[i].txtCompany + '-' + data[i].txtCruise + '】';
+					res += data[i].txtLine + ' ';
+					res += data[i].txtStartDate + ' ' + data[i].numNight + '晚' + data[i].numDay + '天</h1>';
+					/*
+					res += '<h1><span class="am-badge am-badge-success am-radius ">' + data[i].txtSource + '</span> ' + data[i].txtCompany + '-' + data[i].txtCruise + '</h1>';
+					res += '<h2>邮轮线路：' + data[i].txtLine + '</h2>';
+					res += '<h2>出发日期：' + data[i].txtStartDate + ' ' + data[i].numNight + '晚' + data[i].numDay + '天</h2>';
+					*/
+				}
+				res += '<span class="price am-badge am-badge-warning am-radius ">' + p + '</span>';
 				res += '</li>';
 			}
 			res += '</ul>';
@@ -142,7 +209,7 @@ function loadCompany() {
 		success: function(data) {
 			var res = '<option value="*">邮轮公司</option>';
 			for (var i in data) {
-				res += '<option value="' + data[i].txtCompanyNo + '|'+ data[i].txtCompanyName + '">' + data[i].txtCompanyName + '</option>';
+				res += '<option value="' + data[i].txtCompanyNo + '|' + data[i].txtCompanyName + '">' + data[i].txtCompanyName + '</option>';
 			}
 			$("#txtCompanyName").html(res);
 		}
@@ -193,13 +260,82 @@ function loadPort() {
 }
 
 /*加载天数*/
-function loadDay(){
+function loadDay() {
 	var res = '<option value="*">天数</option>';
-	for(var i=3;i<10;i++){
-		res += '<option value="'+i+'">'+i+'天</option>';
+	for (var i = 3; i < 10; i++) {
+		res += '<option value="' + i + '">' + i + '天</option>';
 	}
 	res += '<option value="10">10天以上</option>';
 	$("#day").html(res);
+}
+
+/*加载产品详情*/
+function loadDetail() {
+	var $modal = $('#my-modal-loading');
+	$('.am-modal-hd').html(loadinfo);
+	$modal.modal();
+	var arr1 = url.split('?p=');
+	/*兼容微信*/
+	var arr2 = arr1[1].split('&from=');
+	//console.log(arr1);
+	$.ajax({
+		type: "POST",
+		data: {
+			url: arr2[0]
+		},
+		url: "/service/getDetail",
+		success: function(data) {
+			
+			var html = '';
+			var imglist = data[0].imglist;
+			for(i in imglist){
+				html += '<li>';
+				html += '<img src="'+imglist[i]+'">';
+				html += '</li>';
+			}
+			$('#headerimg').attr('src',imglist[0]);
+			$('#fysm').html(data[0].fysm);
+			$('#qxzc').html(data[0].qxzc);
+			//$('#hxxx').html(data[0].hxxx);
+			var jbxx = data[0].infolist;
+			$('#jbxx').html(jbxx[0].p1+'<br/>'+jbxx[0].p2+'<br/>'+jbxx[0].p3+'<br/>'+jbxx[0].p4);
+			//console.log(data[0].pricelist);
+			var plist = data[0].pricelist;
+			html = '<table class="am-table am-table-bordered am-table-radius am-table-striped">';
+			for(var j in plist){
+				html+='<tr>';
+				html+='<td>'+plist[j].p1+'</td>';
+				html+='<td>'+plist[j].p2+'</td>';
+				html+='<td>'+plist[j].p3+'</td>';
+				html+='<td>'+plist[j].p4+'</td>';
+				html+='<td>'+plist[j].p5+'</td>';
+				html+='<td>'+plist[j].p6+'</td>';
+				html+='</tr>';
+			}
+			html+='</table>';
+			$('#jgxx').html(html);
+			/*加载行程*/
+			var hlist = data[0].xingchenglist;
+			html = '<ul class="am-list">';
+			for(var j in hlist){
+				html+='<li class="am-g">';
+				html+='<p class="p1">'+hlist[j].p1+'</p>';
+				html+='<p><b>'+hlist[j].p2+'</b></p>';
+				html+='<p class="p3">'+hlist[j].p3+'</p>';
+				html+='<p>'+hlist[j].p4+'</p>';
+				html+='</li>';
+			}
+			html+='</ul>';
+			$('#hxxx').html(html);
+			/*生成header*/
+			var arr1 = (jbxx[0].p1).split('：');
+			var arr2 = (jbxx[0].p2).split('：');
+			var arr3 = (jbxx[0].p3).split('：');
+			var arr4 = (jbxx[0].p4).split('：');
+			$('title').html(arr1[1]+' '+arr2[1]+' '+arr3[1]+' '+arr4[1]);
+			$modal.modal('close');
+		}
+	});
 }
 
 $(function() {
@@ -209,7 +345,6 @@ $(function() {
 		window.localStorage.setItem('option_2', 'txtStartDate');
 	}
 	/*初始化系统设置*/
-	var url = window.location.href;
 	if (url.indexOf('option') > 0) {
 		var _op2 = window.localStorage.getItem('option_2');
 		if (_op2 == 'txtStartDate') {

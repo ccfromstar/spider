@@ -15,16 +15,31 @@
 		<link rel="stylesheet" href="css/amazeui.min.css" />
 		<link rel="stylesheet" href="css/basic.css" />
 		<style>
-			.parent {
-				display: inline-block;
-				height: 100%;
-				width: 100%;
-				text-align: center;
-				vertical-align: middle;
-				font-size: 0;
-				margin-top: 50%;
-				/*需要将父容器的字号设置为0，不然当要垂直居中的区块中内容过段换行时就会影响居中的效果*/
-			}
+			@media screen and (min-width: 500px) { 
+				.parent {
+					display: inline-block;
+					height: 100%;
+					width: 100%;
+					text-align: center;
+					vertical-align: middle;
+					font-size: 0;
+					margin-top: 10%;
+					/*需要将父容器的字号设置为0，不然当要垂直居中的区块中内容过段换行时就会影响居中的效果*/
+				}
+			} 
+
+			@media screen and (max-width: 500px) { 
+				.parent {
+					display: inline-block;
+					height: 100%;
+					width: 100%;
+					text-align: center;
+					vertical-align: middle;
+					font-size: 0;
+					margin-top: 50%;
+					/*需要将父容器的字号设置为0，不然当要垂直居中的区块中内容过段换行时就会影响居中的效果*/
+				}
+			} 
 			
 			.parent:before {
 				content: '';

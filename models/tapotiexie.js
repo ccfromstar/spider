@@ -3,7 +3,8 @@ var cheerio = require('cheerio');
 var async = require('async');
 var mysql = require('../models/db');
 
-exports.get = function() {
+exports.get = function(cb) {
+	console.log('正在抓取踏破铁鞋的数据...');
 	var domino = 'http://www.tapotiexie.com';
 	var url = 'http://www.tapotiexie.com/Line/index/name/yt/p/';
 	var txtSource = '踏破铁鞋';
@@ -31,7 +32,8 @@ exports.get = function() {
 					numDay: Number(arr2[1]),
 					numNight: Number(arr2[0]),
 					numPrice: analyPrice($me.find('.tptx_jcyj_2ac .tptx_jcyj_2ac_1').text()),
-					txtUrl: domino + $me.find('.tptx_ytgt_2b a').attr('href')
+					txtUrl: domino + $me.find('.tptx_ytgt_2b a').attr('href'),
+					title:'【' + arr1[0] + '-' + arr1[1] + '】'+ analyLine($me.find('.tptx_jcyj_2ab_1 ul li:first-child').text())+' '+analyStart($me.find('.tptx_jcyj_2ab_1 li').eq(1).text(), $me.find('.tptx_jcyj_2ab_1 span').text()) + ' ' + Number(arr2[0]) + '晚' + Number(arr2[1]) + '天'
 				};
 				list.push(item);
 			});
@@ -39,20 +41,39 @@ exports.get = function() {
 		});
 	}, function(err) {
 		if (err) return console.error(err.stack);
-		/*写入数据库*/
-		async.eachSeries(list, function(record, callback) {
-			console.log('正在写入' + record.txtStartDate + '的数据...');
-			var sql = 'insert into product(txtCompany,txtCruise,txtLine,txtStartDate,numDay,numNight,numPrice,txtUrl,txtSource) values("' + record.txtCompany + '","' + record.txtCruise + '","' + record.txtLine + '","' + record.txtStartDate + '",' + record.numDay + ',' + record.numNight + ',' + record.numPrice + ',"' + record.txtUrl + '","' + txtSource + '");';
-			mysql.query(sql, function(err, info) {
+		/*删除所有数据*/
+		async.waterfall([function(callback) {
+			var sql1 = "delete from product";
+		    mysql.query(sql1, function(err, result) {
+		        if (err) return console.error(err.stack);
+		        callback(null);
+		    });
+		}, function(callback) {
+		    /*写入数据库*/
+			var count = 0;
+			async.eachSeries(list, function(record, callback) {
+				count += 1;
+				console.log('正在写入第' + count + '条数据，共有' + list.length + '条...');
+				var sql = 'insert into product(txtCompany,txtCruise,txtLine,txtStartDate,numDay,numNight,numPrice,txtUrl,txtSource,title) values("' + record.txtCompany + '","' + record.txtCruise + '","' + record.txtLine + '","' + record.txtStartDate + '",' + record.numDay + ',' + record.numNight + ',' + record.numPrice + ',"' + record.txtUrl + '","' + txtSource + '","'+record.title+'");';
+				mysql.query(sql, function(err, info) {
+					if (err) return console.error(err.stack);
+					if (info.affectedRows == 1) {
+						callback(err);
+					}
+				});
+			}, function(err) {
 				if (err) return console.error(err.stack);
-				if (info.affectedRows == 1) {
-					callback(err);
-				}
+				callback(err);
 			});
-		}, function(err) {
-			if (err) return console.error(err.stack);
-			console.log('处理成功！');
+		}], function(err) {
+		    if(err){
+		    	console.log(err);
+		    }else{
+		    	console.log('处理成功！');
+		    	cb(null);
+			}
 		});
+
 	});
 }
 

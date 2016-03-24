@@ -3,10 +3,11 @@
 }
 
 .am-list h1 {
-	font-size: 14px !important;
+	font-size: 12px !important;
 	margin-bottom: 0 !important;
 	padding-left: 5px !important;
-	color: #0E90D2;
+	font-weight: normal !important;
+	/*color: #0E90D2;*/
 }
 
 .am-list h2 {
@@ -19,12 +20,19 @@
 
 .am-list li {
 	position: relative;
+	/*min-height: 50px;*/
+	padding-top:3px;
 }
-
+.am-list h1:after{
+	content: '';
+	display: block;
+	height: 20px;
+	width:100%;
+}
 .am-list .price {
 	position: absolute;
 	right: 5px;
-	top: 3px;
+	bottom: 3px;
 }
 
 hr {
@@ -65,4 +73,55 @@ hr {
 }
 #result_combox{
 	margin-top:-40px;
+}
+.seltime{
+	display: inline-block !important;
+	width:49% !important;
+}
+#modal_detail{
+	width: 100%;
+	left: 0 !important;
+	margin-left:0 !important;
+	top:0 !important;
+	margin-top: 0 !important;
+}
+.am-modal-hd .am-close{
+	top:-3px !important;
+}
+#prodetail p{
+	margin-top: 2px;
+	margin-bottom: 2px;
+}
+#prodetail .am-panel{
+	margin-bottom: 0 !important;
+}
+.tptx_ytxq_5_1b{
+	
+}
+#headerimg{
+	width:152%;
+}
+#prodetail{
+	width:100%;
+	overflow:hidden;
+	font-size:12px;
+}
+ul {
+	list-style: outside none none;
+	padding-left:0;
+}
+#hxxx{
+	padding-top:0;
+}
+.p1{
+	font-size: 14px;
+	color:#0E90D2;
+	font-weight: bold;
+}
+.p3{
+	color:#999999;
+}
+#fysm{
+	width:100%;
+	overflow:auto;
 }

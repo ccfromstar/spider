@@ -43,7 +43,8 @@
 					</select>
 				</div>
 				<div class="am-form-group">
-					<input type="text" class="am-form-field" id="startdate" placeholder="出发日期" data-am-datepicker readonly required />
+					<input type="text" class="am-form-field seltime" id="startdate1" placeholder="出发日期（开始）" data-am-datepicker readonly required />
+					<input type="text" class="am-form-field seltime" id="startdate2" placeholder="出发日期（结束）" data-am-datepicker readonly required />
 				</div>
 				<div class="am-form-group">
 					<select data-am-selected id="day">
@@ -54,9 +55,7 @@
 					<button type="button" class="am-btn am-btn-primary am-radius" onclick="comboxSearch()">查询</button>
 					<button type="button" class="am-btn am-btn-default am-radius" onclick="resetFrom()">重置</button>
 				</p>
-				<div class="am-alert am-alert-danger none error1" data-am-alert>
-					<p>最少要选择一个查询条件</p>
-				</div>
+				<div class="am-alert am-alert-danger none errorinfo" data-am-alert></div>
 			</fieldset>
 		</form>
 		<div id="result_combox"></div>

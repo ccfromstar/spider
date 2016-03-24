@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+	<head>
+		<title>荟邮云邮轮航次查询系统</title>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="Cache-Control" content="no-siteapp" />
+		<script src="js/jquery.min.js"></script>
+		<script src="js/amazeui.min.js"></script>
+		<script type="text/javascript" src="js/basic.js"></script>
+		<link rel="stylesheet" href="css/amazeui.min.css" />
+		<link rel="stylesheet" href="css/basic.css" />
+	</head>
+
+	<body class="am-with-fixed-navbar">
+		<!-- Header -->
+		<header data-am-widget="header" class="am-header am-header-default am-no-layout am-header-fixed">
+			<h1 class="am-header-title">
+    		<a href="#title-link">产品详情</a>
+  		</h1>
+		</header>
+
+		<!--产品详情-->
+		<div id="prodetail">
+			<!-- 滚动图片 -->
+			<img id="headerimg" alt="" />
+			<div class="am-panel am-panel-primary">
+				<div class="am-panel-hd">基本信息</div>
+				<div class="am-panel-bd" id="jbxx">
+				</div>
+			</div>
+			<div class="am-panel am-panel-primary">
+				<div class="am-panel-hd">价格信息</div>
+				<div class="am-panel-bd" id="jgxx">
+				</div>
+			</div>
+			<div class="am-panel am-panel-primary">
+				<div class="am-panel-hd">费用说明</div>
+				<div class="am-panel-bd" id="fysm">
+				</div>
+			</div>
+			<div class="am-panel am-panel-primary">
+				<div class="am-panel-hd">取消政策</div>
+				<div class="am-panel-bd" id="qxzc">
+				</div>
+			</div>
+			<div class="am-panel am-panel-primary">
+				<div class="am-panel-hd">航线信息</div>
+				<div class="am-panel-bd" id="hxxx">
+				</div>
+			</div>
+		</div>
+		<!--数据加载层-->
+		<div class="am-modal am-modal-loading am-modal-no-btn" tabindex="-1" id="my-modal-loading">
+			<div class="am-modal-dialog">
+				<div class="am-modal-hd">正在载入...</div>
+				<div class="am-modal-bd">
+					<span class="am-icon-spinner am-icon-spin"></span>
+				</div>
+			</div>
+		</div>
+		<!--回到顶部-->
+		<div data-am-widget="gotop" class="am-gotop am-gotop-fixed">
+			<a href="#top" title="回到顶部">
+				<span class="am-gotop-title">回到顶部</span>
+				<i class="am-gotop-icon am-icon-chevron-up"></i>
+			</a>
+		</div>
+		<!-- Footer -->
+		<div data-am-widget="navbar" class="am-navbar am-cf am-navbar-default " id="">
+			<ul class="am-navbar-nav am-cf am-avg-sm-4">
+				<li class="am-active">
+					<a href="search.html">
+						<span class="am-icon-search"></span>
+						<span class="am-navbar-label">模糊查询</span>
+					</a>
+				</li>
+				<li>
+					<a href="combox.html">
+						<span class="am-icon-search-plus"></span>
+						<span class="am-navbar-label">组合查询</span>
+					</a>
+				</li>
+				<li>
+					<a href="option.html">
+						<span class="am-icon-wrench"></span>
+						<span class="am-navbar-label">设置</span>
+					</a>
+				</li>
+			</ul>
+		</div>
+		<script>
+			$(function() {
+				loadDetail();
+			});
+		</script>
+	</body>
+
+</html>

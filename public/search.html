@@ -10,66 +10,26 @@
 		<meta http-equiv="Cache-Control" content="no-siteapp" />
 		<script src="js/jquery.min.js"></script>
 		<script src="js/amazeui.min.js"></script>
-		<script type="text/javascript" src="js/basic.js"></script>
+		<!--<script type="text/javascript" src="js/basic.js"></script>-->
+		<script src="build/react.js"></script>
+		<script src="build/JSXTransformer.js"></script>
+		<script type="text/jsx" src="js/jsx_main.js"></script>
 		<link rel="stylesheet" href="css/amazeui.min.css" />
 		<link rel="stylesheet" href="css/basic.css" />
+		<script type="text/jsx">
+			React.render(
+				<div>
+					<R_header title="模糊查询" />
+					<R_Search /> 
+					<R_totop />
+					<R_footer data={fun} />
+				</div>, 
+			document.body);
+		</script>
 	</head>
 
-	<body class="am-with-fixed-navbar">
-		<!-- Header -->
-		<header data-am-widget="header" class="am-header am-header-default am-no-layout am-header-fixed">
-			<h1 class="am-header-title">
-    		<a href="#title-link">模糊查询</a>
-  		</h1>
-		</header>
-
-		<!--查询功能-->
-		<form action="" class="am-form am-form-inline">
-			<div class="fixed">
-				<div class="am-form-icon">
-					<i class="am-icon-search"></i>
-					<input type="text" class="am-form-field" id="key" oninput="searchKey();" placeholder="邮轮公司/船名/途径港口">
-					<i class="am-icon-close close none" onclick="clearsearch();"></i>
-				</div>
-			</div>
-			<div id="result">
-				<p class="p_top">搜索关键字提示</p>
-				<p>邮轮公司（如：歌诗达）</p>
-				<p>船名（如：维多利亚）</p>
-				<p>途径港口（如：福冈）</p>
-			</div>
-		</form>
-
-		<!--回到顶部-->
-		<div data-am-widget="gotop" class="am-gotop am-gotop-fixed">
-			<a href="#top" title="回到顶部">
-				<span class="am-gotop-title">回到顶部</span>
-				<i class="am-gotop-icon am-icon-chevron-up"></i>
-			</a>
-		</div>
-		<!-- Footer -->
-		<div data-am-widget="navbar" class="am-navbar am-cf am-navbar-default " id="">
-			<ul class="am-navbar-nav am-cf am-avg-sm-4">
-				<li class="am-active">
-					<a href="search.html">
-						<span class="am-icon-search"></span>
-						<span class="am-navbar-label">模糊查询</span>
-					</a>
-				</li>
-				<li>
-					<a href="combox.html">
-						<span class="am-icon-search-plus"></span>
-						<span class="am-navbar-label">组合查询</span>
-					</a>
-				</li>
-				<li>
-					<a href="option.html">
-						<span class="am-icon-wrench"></span>
-						<span class="am-navbar-label">设置</span>
-					</a>
-				</li>
-			</ul>
-		</div>
+	<body class="am-with-fixed-navbar am-with-fixed-header">
+		
 	</body>
 
 </html>

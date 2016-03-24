@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 var partials = require('express-partials');
 var routeCtrl = require("./routes/ctrl");
 controllers = require('./routes/index');
+var log4js = require("log4js");
 
 var app = express();
 
@@ -64,11 +65,41 @@ app.use(function(err, req, res, next) {
     });
 });
 
+
+//-------------设置服务器端的显示日志BEGIN---------------
+log4js.configure({
+    appenders: [
+      { type: 'console' },
+      {
+        type: 'file',
+        filename: 'logs/access.log',
+        maxLogSize:1024*100,
+        backups:4
+      }
+    ],
+    replaceConsole: true
+});
+
+logger = log4js.getLogger("normal");
+
+app.use(log4js.connectLogger(logger, {
+    level: log4js.levels.TRACE
+}));
+
+//index.js文件如果需要调用错误处理日志，则通过​var logger = require('../app').logger('index');来调用​
+exports.logger=function(name){
+  var logger = log4js.getLogger(name);
+  logger.setLevel('TRACE');
+  return logger;
+}
+
+//当服务器进程异常时记录错误日志
+process.on('uncaughtException', function(err){
+    logger.info(err.stack);
+});
+//-------------设置服务器端的显示日志END---------------
+
 app.listen(8088);
 console.log("8088 start");
-
-process.on('uncaughtException', function(err){
-	console.error(err);
-});
 
 module.exports = app;
