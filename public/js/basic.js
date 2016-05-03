@@ -78,12 +78,20 @@ function showDetail(url) {
 
 /*组合查询条件重置*/
 function resetFrom() {
+	window.sessionStorage.removeItem("data_1");
+	window.sessionStorage.removeItem("data_2");
+	window.sessionStorage.removeItem("data_3");
+	window.sessionStorage.removeItem("data_4_1");
+	window.sessionStorage.removeItem("data_4_2");
+	window.sessionStorage.removeItem("data_5");
+
 	$('#startdate1').val('');
 	$('#startdate2').val('');
 	loadCompany();
 	loadPort();
 	loadShip();
 	loadDay();
+
 }
 
 /*组合查询*/
