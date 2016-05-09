@@ -9,7 +9,7 @@ exports.get = function(cb) {
 	var txtSource = '携程';
 	var url_list = [];
 	var list = [];
-	for (var i = 0; i < 43; i++) {
+	for (var i = 0; i < 50; i++) {
 		url_list.push(url + 'p' + i + '.html');
 	}
 	async.eachSeries(url_list, function(arr_url, callback) {

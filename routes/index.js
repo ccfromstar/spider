@@ -58,12 +58,12 @@ exports.spider = function(req, res) {
 			callback(null);
 		}, function(callback) {
 			//2.携程
-			//ctrip.get(callback);
-			callback(null);
+			ctrip.get(callback);
+			//callback(null);
 		}, function(callback) {
 			//3.同程
-			ly.get(callback);
-			//callback(null);
+			//ly.get(callback);
+			callback(null);
 		}, function(callback) {
 			//4.驴妈妈
 			//lvmama.get(callback);
