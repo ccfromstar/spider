@@ -55,6 +55,7 @@ exports.get = function(cb) {
 				count += 1;
 				console.log('正在写入第' + count + '条数据，共有' + list.length + '条...');
 				var sql = 'insert into product(txtCompany,txtCruise,txtLine,txtStartDate,numDay,numNight,numPrice,txtUrl,txtSource,title) values("' + record.txtCompany + '","' + record.txtCruise + '","' + record.txtLine + '","' + record.txtStartDate + '",' + record.numDay + ',' + record.numNight + ',' + record.numPrice + ',"' + record.txtUrl + '","' + txtSource + '","'+record.title+'");';
+				//console.log(sql);
 				mysql.query(sql, function(err, info) {
 					if (err) return console.error(err.stack);
 					if (info.affectedRows == 1) {
@@ -109,10 +110,18 @@ function analyPrice(str) {
 
 /*解析晚和天*/
 function analyDay(str) {
-	var arr1 = str.split('晚');
-	var arr2 = arr1[1].split('天');
-	var _newStr = arr1[0] + '|' + arr2[0];
-	return _newStr.split('|');
+	if(str.indexOf("天") == -1){
+		var arr1 = str.split('晚');
+		var arr2 = arr1[1].split('日');
+		var _newStr = arr1[0] + '|' + arr2[0];
+		return _newStr.split('|');
+	}else{
+		var arr1 = str.split('晚');
+		var arr2 = arr1[1].split('天');
+		var _newStr = arr1[0] + '|' + arr2[0];
+		return _newStr.split('|');
+	}
+	
 }
 
 /*解析出发日期*/
